@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bank Client Subscription Prediction</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <style>
+        body {
+            background-color: #f8f9fa;
+            color: #343a40;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .card {
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border: none;
+        }
+        .card-header {
+            background-color: #4aba8e;
+            color: white;
+            border-radius: 15px 15px 0 0 !important;
+            padding: 1.5rem;
+        }
+        .form-control {
+            border-radius: 8px;
+            padding: 10px 15px;
+            border: 1px solid #ced4da;
+        }
+        .form-control:focus {
+            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+        }
+        .btn-primary {
+            background-color: #4aba8e;
+            border: none;
+            border-radius: 8px;
+            padding: 10px 20px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        .btn-primary:hover {
+            background-color: #4aba8e;
+            transform: translateY(-2px);
+        }
+        .section-title {
+            color: #495057;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid #dee2e6;
+        }
+        .result-card {
+            border-left: 5px solid #4aba8e;
+            background-color: #f1f8ff;
+        }
+        .form-group label {
+            font-weight: 500;
+            color: #495057;
+        }
+        .icon-container {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        .icon-container i {
+            font-size: 2rem;
+            margin-right: 1rem;
+            color: #4aba8e;
+        }
+        .progress-indicator {
+            height: 8px;
+            background-color: #e9ecef;
+            border-radius: 4px;
+            margin-bottom: 2rem;
+        }
+        .progress-indicator .progress-bar {
+            background-color: #4aba8e;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="card mb-5">
+                    <div class="card-header">
+                        <div class="icon-container">
+                            <i class="fas fa-chart-line"></i>
+                            <h2 class="mb-0">Bank Client Subscription Prediction</h2>
+                        </div>
+                        <p class="mb-0">Fill in the form below to predict if a client will subscribe to a term deposit</p>
+                    </div>
+                    <div class="card-body p-4">
+                        <div class="progress-indicator mb-4">
+                            <div class="progress-bar" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+
+                        <form id="predictForm">
+                            <div class="row">
+                                <div class="col-12">
+                                    <h4 class="section-title"><i class="fas fa-user mr-2"></i>Personal Information</h4>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="age"><i class="fas fa-birthday-cake mr-1"></i> Age</label>
+                                        <input type="number" class="form-control" id="age" required>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="job"><i class="fas fa-briefcase mr-1"></i> Job</label>
+                                        <select class="form-control" id="job" required>
+                                            <option value="">Select job type</option>
+                                            <option value="admin.">Admin</option>
+                                            <option value="blue-collar">Blue-collar</option>
+                                            <option value="entrepreneur">Entrepreneur</option>
+                                            <option value="housemaid">Housemaid</option>
+                                            <option value="management">Management</option>
+                                            <option value="retired">Retired</option>
+                                            <option value="self-employed">Self-employed</option>
+                                            <option value="services">Services</option>
+                                            <option value="student">Student</option>
+                                            <option value="technician">Technician</option>
+                                            <option value="unemployed">Unemployed</option>
+                                            <option value="unknown">Unknown</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="marital"><i class="fas fa-heart mr-1"></i> Marital Status</label>
+                                        <select class="form-control" id="marital" required>
+                                            <option value="">Select status</option>
+                                            <option value="divorced">Divorced</option>
+                                            <option value="married">Married</option>
+                                            <option value="single">Single</option>
+                                            <option value="unknown">Unknown</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="education"><i class="fas fa-graduation-cap mr-1"></i> Education Level</label>
+                                        <select class="form-control" id="education" required>
+                                            <option value="">Select education</option>
+                                            <option value="basic.4y">Basic 4 years</option>
+                                            <option value="basic.6y">Basic 6 years</option>
+                                            <option value="basic.9y">Basic 9 years</option>
+                                            <option value="high.school">High School</option>
+                                            <option value="illiterate">Illiterate</option>
+                                            <option value="professional.course">Professional Course</option>
+                                            <option value="university.degree">University Degree</option>
+                                            <option value="unknown">Unknown</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row mt-4">
+                                <div class="col-12">
+                                    <h4 class="section-title"><i class="fas fa-money-bill-wave mr-2"></i>Financial Information</h4>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="balance"><i class="fas fa-euro-sign mr-1"></i> Average Yearly Balance</label>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">€</span>
+                                            </div>
+                                            <input type="number" class="form-control" id="balance" required>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="default"><i class="fas fa-exclamation-triangle mr-1"></i> Credit in Default?</label>
+                                        <select class="form-control" id="default" required>
+                                            <option value="">Select option</option>
+                                            <option value="no">No</option>
+                                            <option value="yes">Yes</option>
+                                            <option value="unknown">Unknown</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="housing"><i class="fas fa-home mr-1"></i> Housing Loan?</label>
+                                        <select class="form-control" id="housing" required>
+                                            <option value="">Select option</option>
+                                            <option value="no">No</option>
+                                            <option value="yes">Yes</option>
+                                            <option value="unknown">Unknown</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="loan"><i class="fas fa-hand-holding-usd mr-1"></i> Personal Loan?</label>
+                                        <select class="form-control" id="loan" required>
+                                            <option value="">Select option</option>
+                                            <option value="no">No</option>
+                                            <option value="yes">Yes</option>
+                                            <option value="unknown">Unknown</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row mt-4">
+                                <div class="col-12">
+                                    <h4 class="section-title"><i class="fas fa-phone-alt mr-2"></i>Contact Information</h4>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="contact"><i class="fas fa-comment mr-1"></i> Contact Type</label>
+                                        <select class="form-control" id="contact" required>
+                                            <option value="">Select type</option>
+                                            <option value="cellular">Cellular</option>
+                                            <option value="telephone">Telephone</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="day_of_week"><i class="fas fa-calendar-day mr-1"></i> Last Contact Day</label>
+                                        <select class="form-control" id="day_of_week" required>
+                                            <option value="">Select day</option>
+                                            <option value="mon">Monday</option>
+                                            <option value="tue">Tuesday</option>
+                                            <option value="wed">Wednesday</option>
+                                            <option value="thu">Thursday</option>
+                                            <option value="fri">Friday</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="month"><i class="fas fa-calendar-alt mr-1"></i> Last Contact Month</label>
+                                        <select class="form-control" id="month" required>
+                                            <option value="">Select month</option>
+                                            <option value="jan">January</option>
+                                            <option value="feb">February</option>
+                                            <option value="mar">March</option>
+                                            <option value="apr">April</option>
+                                            <option value="may">May</option>
+                                            <option value="jun">June</option>
+                                            <option value="jul">July</option>
+                                            <option value="aug">August</option>
+                                            <option value="sep">September</option>
+                                            <option value="oct">October</option>
+                                            <option value="nov">November</option>
+                                            <option value="dec">December</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="duration"><i class="fas fa-clock mr-1"></i> Last Contact Duration (seconds)</label>
+                                        <input type="number" class="form-control" id="duration" required>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="text-center mt-4">
+                                <button type="submit" class="btn btn-primary btn-lg px-5">
+                                    <i class="fas fa-calculator mr-2"></i>Generate Prediction
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <div id="result" class="card result-card" style="display:none;">
+                    <div class="card-body">
+                        <h4><i class="fas fa-chart-pie mr-2"></i>Prediction Result</h4>
+                        <div class="alert alert-info mt-3">
+                            <div class="d-flex align-items-center">
+                                <i class="fas fa-info-circle fa-2x mr-3"></i>
+                                <div>
+                                    <h5 class="mb-1">Client Subscription Status:</h5>
+                                    <p id="prediction" class="mb-0 font-weight-bold"></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Update progress bar as user fills form
+        const formInputs = $('#predictForm input, #predictForm select');
+        const totalFields = formInputs.length;
+
+        formInputs.on('change', function() {
+            const filledFields = $('#predictForm input:valid, #predictForm select:valid').length;
+            const progress = Math.round((filledFields / totalFields) * 100);
+            $('.progress-bar').css('width', progress + '%').attr('aria-valuenow', progress);
+        });
+
+        // Handle form submission
+        $('#predictForm').on('submit', function(event) {
+            event.preventDefault();
+
+            // Get form data
+            const formData = {
+                age: $('#age').val(),
+                balance: $('#balance').val(),
+                job: $('#job').val(),
+                marital: $('#marital').val(),
+                education: $('#education').val(),
+                default: $('#default').val(),
+                housing: $('#housing').val(),
+                loan: $('#loan').val(),
+                contact: $('#contact').val(),
+                day_of_week: $('#day_of_week').val(),
+                month: $('#month').val(),
+                duration: $('#duration').val()
+            };
+
+            // Show loading state
+            $('button[type="submit"]').html('<span class="spinner-border spinner-border-sm mr-2" role="status" aria-hidden="true"></span> Processing...').attr('disabled', true);
+
+            // Send data to Flask backend
+            $.ajax({
+                url: '/predict',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(formData),
+                success: function(response) {
+                    // Reset button
+                    $('button[type="submit"]').html('<i class="fas fa-calculator mr-2"></i>Generate Prediction').attr('disabled', false);
+
+                    // Display result
+                    const isSubscribed = response.Subscribed === 1;
+                    $('#prediction').html(
+                        isSubscribed ?
+                        '<span class="text-success"><i class="fas fa-check-circle mr-1"></i> Client is likely to subscribe</span>' :
+                        '<span class="text-danger"><i class="fas fa-times-circle mr-1"></i> Client is unlikely to subscribe</span>'
+                    );
+
+                    // Show result card with animation
+                    $('#result').fadeIn();
+
+                    // Scroll to result
+                    $('html, body').animate({
+                        scrollTop: $("#result").offset().top - 20
+                    }, 500);
+                },
+                error: function(xhr, status, error) {
+                    // Reset button
+                    $('button[type="submit"]').html('<i class="fas fa-calculator mr-2"></i>Generate Prediction').attr('disabled', false);
+
+                    // Display error
+                    $('#prediction').html('<span class="text-danger"><i class="fas fa-exclamation-circle mr-1"></i> Error: ' + error + '</span>');
+                    $('#result').fadeIn();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
